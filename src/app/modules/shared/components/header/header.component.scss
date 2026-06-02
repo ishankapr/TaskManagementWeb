@@ -1,0 +1,63 @@
+@import 'common';
+
+header {
+  height: 90px;
+  padding: 1rem;
+  box-shadow: 0 1px 18px -7px #80808073;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .logo {
+    width: 35%;
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  .avatar{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    .img__box{
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      overflow: hidden;
+      img{
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .user__info{
+      text-align: left;
+      .logout{
+        color: orangered;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+
+@include tabletScreen{
+  :host{
+    header{
+      padding: 0 3rem;
+      .logo {
+        width: 20%;
+      }
+    }
+  }
+}
+
+@include DesktopScreen{
+  :host{
+    header{
+      .logo {
+        width: 11%;
+      }
+    }
+  }
+}

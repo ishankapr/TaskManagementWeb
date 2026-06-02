@@ -1,0 +1,42 @@
+<div class="addUserForm" @fadeIn>
+  <div class="container">
+    <div class="box_header">
+      <div class="close_icon" (click)="close()">
+        <svg>
+          <use href="#close-icon"></use>
+        </svg>
+      </div>
+    </div>
+    <div class="box_body">
+      <div>
+        <h2>Add New User</h2>
+        <form [formGroup]="userForm" (ngSubmit)="addUser()">
+
+          <div class="form__item">
+            <label for="username">Username:</label>
+            <input type="text" id="username" formControlName="username" required>
+            <div *ngIf="userForm.get('username')?.touched && userForm.get('username')?.invalid">
+              <small class="error">Username is required</small>
+            </div>
+          </div>
+
+          <div class="form__item">
+            <label for="password">Password:</label>
+            <input type="password" id="password" formControlName="password" required>
+            <div *ngIf="userForm.get('password')?.touched && userForm.get('password')?.invalid">
+              <small class="error">Password is required</small>
+            </div>
+          </div>
+
+          <div class="form__item">
+            <label for="role">Role:</label>
+            <select id="role" formControlName="role" required>
+              <option *ngFor="let role of userRoles" [value]="role">{{ role }}</option>
+            </select>
+          </div>
+          <button type="submit" [disabled]="userForm.invalid">Add User</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

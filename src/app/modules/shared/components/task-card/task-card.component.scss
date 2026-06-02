@@ -1,0 +1,106 @@
+@import 'common';
+
+
+.task__card{
+  width: 100%;
+  padding: 1rem 0.5rem;
+  height: 100px;
+  margin: 0.3rem 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .left__part{
+    .title{
+      @include textStyle(15px, 20px, #000, bold);
+      padding: 0.3rem 0
+    }
+    .description{
+      @include textStyle(14px, 20px, #00000079, 500);
+      padding: 0.3rem 0
+    }
+    .assignedTo{
+      @include textStyle(14px, 20px, #00000079, 500);
+      padding: 0.3rem 0;
+      span{
+        color: brown;
+      }
+    }
+  }
+
+
+  .right__part{
+    display: flex;
+    align-items: center;
+    gap:0.7rem;
+    .status{
+      font-size: 12px;
+      font-weight: 400;
+      padding: 0.3rem 0.5rem;
+      border-radius: 20px;
+      line-height: 20px;
+      width: fit-content;
+
+      &:is(.toDo){
+        background: rgba(128, 128, 128, 0.212);
+        border: gray 1px solid;
+        color: gray;
+      }
+
+      &:is(.inProgress){
+        background: rgba(72, 75, 245, 0.212);
+        border: rgb(46, 64, 224) 1px solid;
+        color: rgb(46, 64, 224);
+      }
+
+      &:is(.done){
+        background: rgba(0, 128, 0, 0.219);
+        border: green 1px solid;
+        color: green;
+      }
+
+      &:is(.needDetails){
+        background: rgba(255, 0, 0, 0.288);
+        border: red 1px solid;
+        color: red;
+      }
+    }
+
+    .action_btns{
+      svg{
+        width: 18px;
+        height: 18px;
+        margin: 0.5rem;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+
+
+@include DesktopScreen{
+  :host {
+    .task__card{
+      padding: 1rem 1.5rem;
+      .left__part{
+        .title{
+          @include textStyle(20px, 20px, #000, bold);
+          padding: 0.3rem 0
+        }
+        .description{
+          @include textStyle(18px, 20px, #00000079, 500);
+          padding: 0.3rem 0
+        }
+      }
+      .right__part{
+        gap: 1rem;
+        .status{
+          @include textStyle(15px, 20px, #000, 400);
+        }
+      }
+    }
+  }
+}

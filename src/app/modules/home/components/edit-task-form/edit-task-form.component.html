@@ -1,0 +1,45 @@
+<div class="addTaskForm" @fadeIn>
+  <div class="container">
+    <div class="box_header">
+      <div class="close_icon" (click)="close()">
+        <svg>
+          <use href="#close-icon"></use>
+        </svg>
+      </div>
+    </div>
+    <div class="box_body">
+      <div>
+        <h2>Edit {{task.title}}</h2>
+        <form [formGroup]="taskForm" (ngSubmit)="saveTask()">
+          <div class="form__item">
+            <label for="title">Title:</label>
+            <input type="text" id="title" formControlName="title" required>
+            <div *ngIf="taskForm.get('title')?.touched && taskForm.get('title')?.invalid">
+              <small class="error">Title is required</small>
+            </div>
+          </div>
+
+          <div class="form__item">
+            <label for="description">Description:</label>
+            <input type="text" id="description" formControlName="description" required>
+            <div *ngIf="taskForm.get('description')?.touched && taskForm.get('description')?.invalid">
+              <small class="error">Description is required</small>
+            </div>
+          </div>
+          <div class="form__item">
+            <label for="status">Status:</label>
+            <select id="status" formControlName="status" required>
+              <option *ngFor="let status of taskStatuses" [value]="status">{{ status }}</option>
+            </select>
+          </div>
+          <div class="form__item">
+            <label for="assignedTo">Assign To:</label>
+            <select id="assignedTo" formControlName="assignedTo" required>
+              <option *ngFor="let user of users$ | async" [value]="user.id">{{ user.username }}</option>
+            </select>
+          </div>
+            <button type="submit" [disabled]="taskForm.invalid">Save</button>
+        </form>
+      </div>
+    </div>
+</div>

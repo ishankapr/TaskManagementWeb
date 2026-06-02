@@ -1,0 +1,14 @@
+<div class="task__card">
+  <div class="left__part">
+    <p class="title">{{task.title}}</p>
+    <p class="description">{{task.description}}</p>
+    <p class="assignedTo">assignedTo: <span>{{getTaskAssigneeUser(task)}}</span></p>
+  </div>
+  <div class="right__part">
+    <div class="action_btns">
+      <svg (click)="editTask()"><use href="#edit"></use></svg>
+      <svg  (click)="onDeleteClick()"><use href="#delete"></use></svg>
+    </div>
+    <span class="status" [ngClass]="getStatusClass(task.status)">{{task.status}}</span>
+  </div>
+</div>

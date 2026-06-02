@@ -1,0 +1,30 @@
+@import 'common';
+
+.card {
+  height: 80px;
+  padding: 1rem;
+  margin: 0.2rem 0;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .left {
+    .title {
+      @include textStyle(21px, 24px, #000, bold);
+    }
+
+    .role {
+      @include textStyle(15px, 24px, #4F4F4F, 400);
+    }
+  }
+
+  .right{
+    text-align: center;
+
+    p:nth-child(1){
+      @include textStyle(21px, 24px, #000, bold);
+
+    }
+  }
+}

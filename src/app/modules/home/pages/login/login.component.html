@@ -1,0 +1,23 @@
+<section>
+  <div class="head">
+  </div>
+  <div class="container">
+    <div class="right">
+      <div class="form-box">
+        <div class="logo">
+          <img src="../../../../../assets/images/logo.png" alt="logo" />
+        </div>
+        <form [formGroup]="loginForm">
+          <div class="form-field">
+            <input type="email" formControlName="username" placeholder="username">
+          </div>
+          <div class="form-field">
+            <input type="password" formControlName="password" placeholder="password">
+          </div>
+          <button (click)="login($event)">Sign in</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</section>
