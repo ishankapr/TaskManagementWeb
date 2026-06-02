@@ -1,11 +1,11 @@
 # Task Management Application
 
-This is a task management application built using Angular. The application allows users to add, edit, delete, and list tasks. Users can have different roles (Admin, Manager, User) with specific permissions for each role.
+This is a task management application built using Angular. The application allows users to add, edit, delete, and list tasks. Users can have different roles (Admin, User) with specific permissions for each role.
 
 ## Features
 
 - User authentication (login)
-- Role-based access control (Admin, Manager, User)
+- Role-based access control (Admin, User)
 - Create, edit, delete, and list tasks
 - Assign tasks to users
 - Task status management
@@ -19,6 +19,5 @@ This is a task management application built using Angular. The application allow
 
 ## User Roles
 
-- **Admin**: Can delete tasks, define new users, and assign roles.
-- **Manager**: Can create and edit tasks, assign tasks to users.
+- **Admin**: Can delete tasks, define new users
 - **User**: Can view tasks assigned to them.
