@@ -2,27 +2,24 @@ import { Component, inject, OnInit } from '@angular/core';
 import { fadeIn } from '../../../core/animation';
 import { AppState } from '../../../../store/App/app.reducer';
 import { Store } from '@ngrx/store';
-import * as appActions from '../../../../store/App/app.actions'
+import * as appActions from '../../../../store/App/app.actions';
+import * as taskActions from '../../../../store/Tasks/task.actions';
+import { getUsers } from '../../../../store/Users/user.selectors';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { ButtonModule } from 'primeng/button';
 import { TextareaModule } from 'primeng/textarea';
 import { User } from '../../../core/models/User';
-import { TaskService } from '../../../core/services/task.service';
-import { UserService } from '../../../core/services/user.service';
-import { AuthService } from '../../../core/services/auth.service';
 import { TaskStatus } from '../../../core/enums/TaskStatus.enum';
-import { Task } from '../../../core/models/Task';
-import { UserRole } from '../../../core/enums/userRole.enum';
+import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-
 
 @Component({
   selector: 'app-add-task-form',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, InputTextModule, SelectModule, ButtonModule, TextareaModule],
+  imports: [ReactiveFormsModule, CommonModule, AsyncPipe, InputTextModule, SelectModule, ButtonModule, TextareaModule],
   templateUrl: './add-task-form.component.html',
   styleUrl: './add-task-form.component.scss',
   animations: [fadeIn]
@@ -30,17 +27,12 @@ import { ToastrService } from 'ngx-toastr';
 export class AddTaskFormComponent implements OnInit {
 
   taskForm!: FormGroup;
-  users: User[] = [];
-  currentUser!: User | null
-  currentUserRole: string =''
+  users$!: Observable<User[]>;
   taskStatuses = Object.values(TaskStatus);
 
-  _store = inject(Store<AppState>)
-  _fb = inject(FormBuilder)
-  _taskService = inject(TaskService)
-  _userService = inject(UserService)
-  _toastr = inject(ToastrService)
-
+  _store = inject(Store<AppState>);
+  _fb = inject(FormBuilder);
+  _toastr = inject(ToastrService);
 
   ngOnInit(): void {
     this.taskForm = this._fb.group({
@@ -50,38 +42,21 @@ export class AddTaskFormComponent implements OnInit {
       assignedTo: ['', Validators.required]
     });
 
-    this.getCurrentUserInfo()
-  }
-
-
-  getCurrentUserInfo(){
-    const user = localStorage.getItem('currentUser');
-    if(user){
-      this.currentUser = JSON.parse(user);
-      this.currentUserRole = this.currentUser?.role ?? ''
-    }
+    this.users$ = this._store.select(getUsers);
   }
 
   addTask(): void {
     if (this.taskForm.valid) {
-      const newTask: Task = this.taskForm.value;
-      this._taskService.addTask(newTask).subscribe(() => {
-        this.taskForm.reset({
-          title: '',
-          description: '',
-          status: TaskStatus.ToDo,
-          assignedTo: ''
-        });
-      });
+      this._store.dispatch(taskActions.addTask({ task: this.taskForm.value }));
+      this.taskForm.reset({ title: '', description: '', status: TaskStatus.ToDo, assignedTo: '' });
       this._toastr.success('Task added successfully');
-      this._store.dispatch(appActions.toggleAddTaskForm())
-      return
-    }else{
-      this._toastr.error('something went wrong');
+      this._store.dispatch(appActions.toggleAddTaskForm());
+    } else {
+      this._toastr.error('Please fill in all required fields');
     }
   }
 
   close() {
-    this._store.dispatch(appActions.toggleAddTaskForm())
+    this._store.dispatch(appActions.toggleAddTaskForm());
   }
 }

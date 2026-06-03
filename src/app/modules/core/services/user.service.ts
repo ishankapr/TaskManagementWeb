@@ -1,37 +1,21 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { User } from '../models/User';
-import { UserRole } from '../enums/userRole.enum';
-import { Observable, of } from 'rxjs';
+
+const API_URL = 'http://localhost:3000';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-
-  private users: User[] = [
-    {
-      id: 1,
-      username: 'admin',
-      password: '123456',
-      role: UserRole.Admin
-    },
-    {
-      id: 2,
-      username: 'user',
-      password: '123456',
-      role: UserRole.User,
-    },
-  ];
+  private http = inject(HttpClient);
 
   getUsers(): Observable<User[]> {
-    return of(this.users);
+    return this.http.get<User[]>(`${API_URL}/users`);
   }
 
-  addUser(user: User): Observable<void> {
-    return new Observable(observer => {
-      this.users.push({ ...user, id: this.users.length + 1 });
-      observer.next();
-      observer.complete();
-    });
+  addUser(user: Omit<User, 'id'>): Observable<User> {
+    return this.http.post<User>(`${API_URL}/users`, user);
   }
 }

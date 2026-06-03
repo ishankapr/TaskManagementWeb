@@ -7,18 +7,16 @@ import { ButtonModule } from 'primeng/button';
 import { DrawerModule } from 'primeng/drawer';
 import { TextareaModule } from 'primeng/textarea';
 import { TaskStatus } from '../../../core/enums/TaskStatus.enum';
-import { TaskService } from '../../../core/services/task.service';
-import { AuthService } from '../../../core/services/auth.service';
-import { UserService } from '../../../core/services/user.service';
 import { User } from '../../../core/models/User';
 import { Observable } from 'rxjs';
 import { Task } from '../../../core/models/Task';
 import { fadeIn } from '../../../core/animation';
 import { AppState } from '../../../../store/App/app.reducer';
 import { Store } from '@ngrx/store';
-import * as appActions from '../../../../store/App/app.actions'
+import * as appActions from '../../../../store/App/app.actions';
+import * as taskActions from '../../../../store/Tasks/task.actions';
+import { getUsers } from '../../../../store/Users/user.selectors';
 import { ToastrService } from 'ngx-toastr';
-
 
 @Component({
   selector: 'app-edit-task-form',
@@ -30,22 +28,16 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class EditTaskFormComponent implements OnInit {
 
-  @Input() task!: Task
+  @Input() task!: Task;
 
   visible = true;
-  taskForm!: FormGroup
-  users$!: Observable<User[]>
-  tasks$!: Observable<Task[]>
-  currentUser!: User | null
-  currentUserRole: string = ''
+  taskForm!: FormGroup;
+  users$!: Observable<User[]>;
   taskStatuses = Object.values(TaskStatus);
 
-  _fb = inject(FormBuilder)
-  _taskService = inject(TaskService)
-  _authService = inject(AuthService)
-  _userService = inject(UserService)
-  _store = inject(Store<AppState>)
-  _toastr = inject(ToastrService)
+  _fb = inject(FormBuilder);
+  _store = inject(Store<AppState>);
+  _toastr = inject(ToastrService);
 
   ngOnInit(): void {
     this.taskForm = this._fb.group({
@@ -55,10 +47,8 @@ export class EditTaskFormComponent implements OnInit {
       assignedTo: [this.task.assignedTo, Validators.required]
     });
 
-    this.loadTasksAndUsers()
-    this.getCurrentUserInfo()
+    this.users$ = this._store.select(getUsers);
   }
-
 
   saveTask(): void {
     if (this.taskForm.valid) {
@@ -67,30 +57,15 @@ export class EditTaskFormComponent implements OnInit {
         ...this.taskForm.value,
         assignedTo: +(this.taskForm.value.assignedTo)
       };
-      this._store.dispatch(appActions.toggleEditTaskForm())
-      this._taskService.updateTask(updatedTask).subscribe()
+      this._store.dispatch(taskActions.updateTask({ task: updatedTask }));
+      this._store.dispatch(appActions.toggleEditTaskForm());
       this._toastr.success('Task updated successfully');
-      return;
     } else {
       this._toastr.error('Something went wrong');
     }
   }
 
-  getCurrentUserInfo() {
-    const user = localStorage.getItem('currentUser');
-    if (user) {
-      this.currentUser = JSON.parse(user);
-      this.currentUserRole = this.currentUser?.role ?? ''
-    }
-  }
-
-
-  loadTasksAndUsers(): void {
-    this.users$ = this._userService.getUsers();
-    this.tasks$ = this._taskService.getTasks();
-  }
-
   close() {
-    this._store.dispatch(appActions.toggleEditTaskForm())
+    this._store.dispatch(appActions.toggleEditTaskForm());
   }
 }

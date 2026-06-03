@@ -3,21 +3,22 @@ import { HeaderComponent } from '../../../shared/components/header/header.compon
 import { TaskCardComponent } from '../../../shared/components/task-card/task-card.component';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
-import { TaskService } from '../../../core/services/task.service';
 import { User } from '../../../core/models/User';
-import { Observable, of, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Task } from '../../../core/models/Task';
 import { UserFormComponent } from '../../components/user-form/user-form.component';
-import { UserService } from '../../../core/services/user.service';
 import { AppState } from '../../../../store/App/app.reducer';
 import { Store } from '@ngrx/store';
 import { getAddTaskForm, getAddUserForm, getEditTaskForm } from '../../../../store/App/app.selectors';
-import * as appActions from '../../../../store/App/app.actions'
+import * as appActions from '../../../../store/App/app.actions';
+import * as taskActions from '../../../../store/Tasks/task.actions';
+import * as userActions from '../../../../store/Users/user.actions';
+import { getTasks } from '../../../../store/Tasks/task.selectors';
+import { getUsers } from '../../../../store/Users/user.selectors';
 import { AddTaskFormComponent } from '../../components/add-task-form/add-task-form.component';
 import { EditTaskFormComponent } from '../../components/edit-task-form/edit-task-form.component';
 import { ToastrService } from 'ngx-toastr';
-
-
+import { UserRole } from '../../../core/enums/userRole.enum';
 
 @Component({
   selector: 'app-home-page',
@@ -28,50 +29,40 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class HomePageComponent implements OnInit {
 
-  currentUserRole: string = '';
-  currentUser!: User
+  currentUser!: User;
+  get currentUserRole(): string { return this.currentUser?.role ?? ''; }
   selectedTaskForEdit!: Task;
-  tasks$!: Observable<Task[]>
-  users$!: Observable<User[]>
-  showAddUserForm$!: Observable<boolean>
-  showAddTaskForm$!: Observable<boolean>
-  showEditTaskForm$: Observable<boolean> = of(false)
+  tasks$!: Observable<Task[]>;
+  users$!: Observable<User[]>;
+  showAddUserForm$!: Observable<boolean>;
+  showAddTaskForm$!: Observable<boolean>;
+  showEditTaskForm$!: Observable<boolean>;
 
-
-  _taskService = inject(TaskService)
-  _userService = inject(UserService)
-  _store = inject(Store<AppState>)
-  _toastr = inject(ToastrService)
+  _store = inject(Store<AppState>);
+  _toastr = inject(ToastrService);
 
   ngOnInit(): void {
-    this.getCurrentUser()
-    this.loadTasks()
-    this.loadUsers()
+    this.getCurrentUser();
 
-    this.showAddUserForm$ = this._store.select(getAddUserForm)
-    this.showAddTaskForm$ = this._store.select(getAddTaskForm)
-    this.showEditTaskForm$ = this._store.select(getEditTaskForm)
+    if (this.currentUser.role === UserRole.Admin) {
+      this._store.dispatch(taskActions.loadTasks());
+    } else {
+      this._store.dispatch(taskActions.loadTasksForUser({ userId: this.currentUser.id }));
+    }
+    this._store.dispatch(userActions.loadUsers());
+
+    this.tasks$ = this._store.select(getTasks);
+    this.users$ = this._store.select(getUsers);
+    this.showAddUserForm$ = this._store.select(getAddUserForm);
+    this.showAddTaskForm$ = this._store.select(getAddTaskForm);
+    this.showEditTaskForm$ = this._store.select(getEditTaskForm);
   }
 
   getCurrentUser() {
     const user = localStorage.getItem('currentUser');
     if (user) {
-      this.currentUser = JSON.parse(user ?? '')
-      this.currentUserRole = this.currentUser.role
+      this.currentUser = JSON.parse(user);
     }
-  }
-
-
-  loadTasks(): void {
-    if (this.currentUserRole === 'Admin') {
-      this.tasks$ = this._taskService.getTasks();
-    } else if (this.currentUserRole === 'User') {
-      this.tasks$ = this._taskService.getTasksForUser(this.currentUser.id)
-    }
-  }
-
-  loadUsers() {
-    this.users$ = this._userService.getUsers()
   }
 
   editTask(task: Task): void {
@@ -79,29 +70,18 @@ export class HomePageComponent implements OnInit {
   }
 
   deleteTask(taskId: number): void {
-    if (this.currentUserRole !== 'Admin') {
-      this._toastr.error('You are not allowed to delete ');
+    if (this.currentUser.role !== UserRole.Admin) {
+      this._toastr.error('You are not allowed to delete');
       return;
-    } else {
-      this._taskService.deleteTask(taskId).subscribe({
-        next: (tasks) => {
-          this.tasks$ = this._taskService.getTasks();
-        },
-        error: (error) => {
-          console.error('Error deleting task:', error);
-          this._toastr.error('Error deleting task')
-        }
-      });
     }
-
+    this._store.dispatch(taskActions.deleteTask({ taskId }));
   }
 
   showAddUserForm() {
-    this._store.dispatch(appActions.toggleAddUserForm())
+    this._store.dispatch(appActions.toggleAddUserForm());
   }
 
   showAddTaskForm() {
-    this._store.dispatch(appActions.toggleAddTaskForm())
+    this._store.dispatch(appActions.toggleAddTaskForm());
   }
-
 }

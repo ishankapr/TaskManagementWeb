@@ -34,7 +34,7 @@
         <div class="form-field">
           <label for="assignedTo">Assign To <span class="required">*</span></label>
           <p-select id="assignedTo" formControlName="assignedTo"
-            [options]="users" optionLabel="username" optionValue="id"
+            [options]="(users$ | async) ?? []" optionLabel="username" optionValue="id"
             placeholder="Select user" styleClass="w-full" />
         </div>
       </div>
