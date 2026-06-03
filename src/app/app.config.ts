@@ -6,7 +6,8 @@ import { provideEffects } from '@ngrx/effects';
 import { reducers, metaReducers } from './store';
 import { TaskEffects } from './store/Tasks/task.effects';
 import { UserEffects } from './store/Users/user.effects';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { authInterceptor } from './modules/core/interceptors/auth.interceptor';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideToastr } from 'ngx-toastr';
 import { providePrimeNG } from 'primeng/config';
@@ -18,7 +19,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideStore(reducers, { metaReducers }),
     provideEffects([TaskEffects, UserEffects]),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([authInterceptor])),
     provideAnimations(),
     provideToastr({ closeButton: false }),
     providePrimeNG({ theme: { preset: Aura, options: { darkModeSelector: false } } }),

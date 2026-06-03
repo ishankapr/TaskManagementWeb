@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { AuthService } from '../../../core/services/auth.service';
+import { Router } from '@angular/router';
 import { AvatarModule } from 'primeng/avatar';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
@@ -13,14 +13,16 @@ import { TooltipModule } from 'primeng/tooltip';
 })
 export class HeaderComponent implements OnInit {
 
-  _authService = inject(AuthService)
-  currentuser!:any
+  private _router = inject(Router);
+  currentuser!: any;
+
   ngOnInit(): void {
     const user = localStorage.getItem('currentUser');
-    this.currentuser = JSON.parse(user ?? '')
+    this.currentuser = JSON.parse(user ?? '');
   }
 
-  logout(){
-    this._authService.logout()
+  logout(): void {
+    localStorage.removeItem('currentUser');
+    this._router.navigate(['/login']);
   }
 }
