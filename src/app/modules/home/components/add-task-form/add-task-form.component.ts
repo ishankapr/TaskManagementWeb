@@ -38,8 +38,6 @@ export class AddTaskFormComponent implements OnInit {
     this.taskForm = this._fb.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
-      status: [TaskStatus.ToDo, Validators.required],
-      assignedTo: ['', Validators.required]
     });
 
     this.users$ = this._store.select(getUsers);
@@ -48,7 +46,7 @@ export class AddTaskFormComponent implements OnInit {
   addTask(): void {
     if (this.taskForm.valid) {
       this._store.dispatch(taskActions.addTask({ task: this.taskForm.value }));
-      this.taskForm.reset({ title: '', description: '', status: TaskStatus.ToDo, assignedTo: '' });
+      this.taskForm.reset({ title: '', description: '' });
       this._toastr.success('Task added successfully');
       this._store.dispatch(appActions.toggleAddTaskForm());
     } else {

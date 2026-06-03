@@ -26,7 +26,7 @@
         <small class="error" *ngIf="taskForm.get('description')?.touched && taskForm.get('description')?.invalid">Description is required</small>
       </div>
 
-      <div class="form-row">
+      <!-- <div class="form-row">
         <div class="form-field">
           <label for="status">Status</label>
           <p-select id="status" formControlName="status" [options]="taskStatuses" placeholder="Select status" styleClass="w-full" />
@@ -37,7 +37,7 @@
             [options]="(users$ | async) ?? []" optionLabel="username" optionValue="id"
             placeholder="Select user" styleClass="w-full" />
         </div>
-      </div>
+      </div> -->
 
       <div class="modal-card__footer">
         <p-button label="Cancel" severity="secondary" variant="outlined" (onClick)="close()" />

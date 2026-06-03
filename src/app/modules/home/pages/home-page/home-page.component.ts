@@ -44,11 +44,7 @@ export class HomePageComponent implements OnInit {
   ngOnInit(): void {
     this.getCurrentUser();
 
-    if (this.currentUser.role === UserRole.Admin) {
-      this._store.dispatch(taskActions.loadTasks());
-    } else {
-      this._store.dispatch(taskActions.loadTasksForUser({ userId: this.currentUser.id }));
-    }
+    this._store.dispatch(taskActions.loadTasks());
     this._store.dispatch(userActions.loadUsers());
 
     this.tasks$ = this._store.select(getTasks);
