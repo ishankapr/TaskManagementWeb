@@ -1,14 +1,20 @@
-<div class="task__card">
-  <div class="left__part">
-    <p class="title">{{task.title}}</p>
-    <p class="description">{{task.description}}</p>
-    <p class="assignedTo">assignedTo: <span>{{getTaskAssigneeUser(task)}}</span></p>
-  </div>
-  <div class="right__part">
-    <div class="action_btns">
-      <svg (click)="editTask()"><use href="#edit"></use></svg>
-      <svg  (click)="onDeleteClick()"><use href="#delete"></use></svg>
+<div class="task-card">
+  <div class="task-card__status-bar" [ngClass]="getStatusClass(task.status)"></div>
+  <div class="task-card__body">
+    <div class="task-card__left">
+      <div class="task-card__title-row">
+        <span class="task-card__title">{{ task.title }}</span>
+        <p-tag [value]="task.status" [severity]="getStatusSeverity(task.status)" />
+      </div>
+      <p class="task-card__description">{{ task.description }}</p>
+      <div class="task-card__meta">
+        <i class="pi pi-user"></i>
+        <span>{{ getTaskAssigneeUser(task) || 'Unassigned' }}</span>
+      </div>
     </div>
-    <span class="status" [ngClass]="getStatusClass(task.status)">{{task.status}}</span>
+    <div class="task-card__actions" *ngIf="currentUserRole === 'Admin'">
+      <p-button icon="pi pi-pencil" size="small" severity="info" variant="text" (onClick)="editTask()" />
+      <p-button icon="pi pi-trash" size="small" severity="danger" variant="text" (onClick)="onDeleteClick()" />
+    </div>
   </div>
 </div>

@@ -1,6 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { InputTextModule } from 'primeng/inputtext';
+import { SelectModule } from 'primeng/select';
+import { ButtonModule } from 'primeng/button';
+import { DrawerModule } from 'primeng/drawer';
+import { TextareaModule } from 'primeng/textarea';
 import { TaskStatus } from '../../../core/enums/TaskStatus.enum';
 import { TaskService } from '../../../core/services/task.service';
 import { AuthService } from '../../../core/services/auth.service';
@@ -18,7 +23,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-edit-task-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, InputTextModule, SelectModule, ButtonModule, DrawerModule, TextareaModule],
   templateUrl: './edit-task-form.component.html',
   styleUrl: './edit-task-form.component.scss',
   animations: [fadeIn]
@@ -27,6 +32,7 @@ export class EditTaskFormComponent implements OnInit {
 
   @Input() task!: Task
 
+  visible = true;
   taskForm!: FormGroup
   users$!: Observable<User[]>
   tasks$!: Observable<Task[]>

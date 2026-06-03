@@ -1,63 +1,44 @@
-@import 'common';
+@use 'common' as *;
 
 header {
-  height: 90px;
-  padding: 1rem;
-  box-shadow: 0 1px 18px -7px #80808073;
+  height: 60px;
+  padding: 0 1.25rem;
+  background: #fff;
+  border-bottom: 1px solid #f3f4f6;
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   .logo {
-    width: 35%;
-    img {
-      width: 100%;
-      height: auto;
-    }
+    height: 28px;
+    width: auto;
   }
 
-  .avatar{
+  .user-section {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    .img__box{
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      overflow: hidden;
-      img{
-        width: 100%;
-        height: 100%;
-      }
-    }
+    gap: 0.6rem;
 
-    .user__info{
-      text-align: left;
-      .logout{
-        color: orangered;
-        cursor: pointer;
+    &__text {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+
+      .username {
+        @include textStyle(13px, 1.2, #111827, 600);
+      }
+
+      .role {
+        @include textStyle(11px, 1, #9ca3af, 400);
       }
     }
   }
 }
 
-
-@include tabletScreen{
-  :host{
-    header{
-      padding: 0 3rem;
-      .logo {
-        width: 20%;
-      }
-    }
-  }
-}
-
-@include DesktopScreen{
-  :host{
-    header{
-      .logo {
-        width: 11%;
-      }
+@include DesktopScreen {
+  :host {
+    header {
+      padding: 0 2rem;
     }
   }
 }

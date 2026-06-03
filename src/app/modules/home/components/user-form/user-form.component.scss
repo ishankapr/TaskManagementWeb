@@ -1,4 +1,4 @@
-@import 'common';
+@use 'common' as *;
 
 .addUserForm {
   position: fixed;

@@ -1,6 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { InputTextModule } from 'primeng/inputtext';
+import { PasswordModule } from 'primeng/password';
+import { SelectModule } from 'primeng/select';
+import { ButtonModule } from 'primeng/button';
 import { UserRole } from '../../../core/enums/userRole.enum';
 import { User } from '../../../core/models/User';
 import { UserService } from '../../../core/services/user.service';
@@ -14,7 +18,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-user-form',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, InputTextModule, PasswordModule, SelectModule, ButtonModule],
   templateUrl: './user-form.component.html',
   styleUrl: './user-form.component.scss',
   animations: [fadeIn]

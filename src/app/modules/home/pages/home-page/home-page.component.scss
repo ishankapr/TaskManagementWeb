@@ -1,125 +1,37 @@
-@import 'common';
+@use 'common' as *;
 
 section {
+  min-height: calc(100vh - 90px);
+  background: #f9fafb;
   padding: 2rem 1rem;
 
   .head {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-
-    h2 {
-      @include textStyle(18px, 20px, #000, 600);
-    }
-
-    &>div {
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-      margin: 0 auto;
-
-      .addTask {
-        background: rgb(35, 35, 226);
-        padding: 0.5rem 0.7rem;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        gap: 0.5rem;
-
-        svg {
-          width: 15px;
-          height: 15px;
-        }
-      }
-
-      .addUser {
-        background: rgb(243, 129, 35);
-        padding: 0.5rem 0.7rem;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        gap: 0.5rem;
-
-        svg {
-          width: 15px;
-          height: 15px;
-        }
-      }
-
-      span {
-        @include textStyle(16px, 20px, #fff, 500);
-      }
-    }
+    justify-content: flex-end;
+    margin-bottom: 1.5rem;
   }
 
-
-  .tab-menu {
-    width: 100%;
-    padding: 1rem;
-
-    .tab-header {
-      display: flex;
-      list-style: none;
+  .tab-content {
+    .tasks__container {
+      width: 100%;
+      max-width: 800px;
+      margin: 0 auto;
       padding: 0;
-      margin: 0;
-
-      div {
-        padding: 10px 10px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        @include textStyle(18px, 18.26px, #78878f, 500);
-
-        &.active {
-          font-weight: bold;
-          border-bottom: 2px solid #c6452c;
-          @include textStyle(18px, 18.26px, #0A2748, bold);
-        }
-      }
     }
 
-    .tab-content {
-      width: 100%;
-      height: auto;
-      padding: 2rem 0;
-
-      .title {
-        @include textStyle(13px, 24px, #0A2748, 600);
-        padding: 1rem 0;
-      }
-
-      .tasks__container {
-        width: 100%;
-        padding: 1rem 0;
-        margin: 0;
-      }
-
-      p {
-        @include textStyle(16px, 24px, #4F4F4F, 400);
-      }
+    p {
+      @include textStyle(16px, 24px, #6b7280, 400);
+      text-align: center;
+      margin-top: 3rem;
     }
   }
 }
-
 
 @include DesktopScreen {
   :host {
     section {
       padding: 2rem 4rem;
-
-      .tab-menu {
-        padding: 1rem 20%;
-      }
-
-      .tasks__container {
-        width: 80%;
-        margin: 5% auto;
-      }
     }
   }
 }

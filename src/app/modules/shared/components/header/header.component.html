@@ -1,16 +1,12 @@
 <header>
-  <div class="avatar">
-    <div class="user__info">
-      <p>{{currentuser.username}}</p>
-      <p>{{currentuser.role}}</p>
-      <p class="logout" (click)="logout()">Logout</p>
-    </div>
-    <div class="img__box">
-      <img src="../../../../../assets/images/avatar.jpg" alt="avatar">
-    </div>
-  </div>
-  <div class="logo">
-    <img src="../../../../../assets/images/logo.png" alt="logo">
-  </div>
+  <img src="../../../../../assets/images/logo.png" alt="logo" class="logo" />
 
+  <div class="user-section">
+    <div class="user-section__text">
+      <span class="username">{{ currentuser.username }}</span>
+      <span class="role">{{ currentuser.role }}</span>
+    </div>
+    <p-avatar image="../../../../../assets/images/avatar.jpg" shape="circle" size="normal" />
+    <p-button icon="pi pi-sign-out" variant="text" severity="secondary" (onClick)="logout()" pTooltip="Logout" tooltipPosition="bottom" />
+  </div>
 </header>

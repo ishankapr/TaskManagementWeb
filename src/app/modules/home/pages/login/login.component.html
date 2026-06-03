@@ -1,23 +1,41 @@
-<section>
-  <div class="head">
-  </div>
-  <div class="container">
-    <div class="right">
-      <div class="form-box">
-        <div class="logo">
-          <img src="../../../../../assets/images/logo.png" alt="logo" />
-        </div>
-        <form [formGroup]="loginForm">
-          <div class="form-field">
-            <input type="email" formControlName="username" placeholder="username">
-          </div>
-          <div class="form-field">
-            <input type="password" formControlName="password" placeholder="password">
-          </div>
-          <button (click)="login($event)">Sign in</button>
-        </form>
-      </div>
+<div class="login-wrapper">
+  <div class="login-card">
+    <div class="login-card__header">
+      <img src="../../../../../assets/images/logo.png" alt="logo" class="logo" />
+      <h2>Welcome Back</h2>
+      <p>Sign in to your account to continue</p>
     </div>
-  </div>
 
-</section>
+    <form [formGroup]="loginForm" (ngSubmit)="login($event)" class="login-card__form">
+      <div class="field">
+        <label for="username">Username</label>
+        <div class="input-group">
+          <i class="pi pi-user input-icon"></i>
+          <input pInputText id="username" formControlName="username" placeholder="Enter your username" class="input-field" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <div class="input-group">
+          <i class="pi pi-lock input-icon"></i>
+          <p-password
+            inputId="password"
+            formControlName="password"
+            placeholder="Enter your password"
+            [feedback]="false"
+            [toggleMask]="true"
+            styleClass="input-password"
+            inputStyleClass="input-field input-field--password" />
+        </div>
+      </div>
+
+      <p-button
+        type="submit"
+        label="Sign In"
+        icon="pi pi-sign-in"
+        styleClass="w-full"
+        [disabled]="loginForm.invalid" />
+    </form>
+  </div>
+</div>

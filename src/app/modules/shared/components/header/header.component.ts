@@ -1,11 +1,13 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { AuthService } from '../../../core/services/auth.service';
-import { User } from '../../../core/models/User';
+import { AvatarModule } from 'primeng/avatar';
+import { ButtonModule } from 'primeng/button';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [],
+  imports: [AvatarModule, ButtonModule, TooltipModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })

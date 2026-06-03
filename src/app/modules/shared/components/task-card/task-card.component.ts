@@ -8,12 +8,15 @@ import { AppState } from '../../../../store/App/app.reducer';
 import { Store } from '@ngrx/store';
 import * as appActions from '../../../../store/App/app.actions'
 import { ToastrService } from 'ngx-toastr';
+import { CardModule } from 'primeng/card';
+import { TagModule } from 'primeng/tag';
+import { ButtonModule } from 'primeng/button';
 
 
 @Component({
   selector: 'app-task-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CardModule, TagModule, ButtonModule],
   templateUrl: './task-card.component.html',
   styleUrl: './task-card.component.scss'
 })
@@ -56,5 +59,15 @@ export class TaskCardComponent {
   getTaskAssigneeUser(task: Task): string | undefined {
     const user = this.users.find(user => user.id === task.assignedTo);
     return user?.username;
+  }
+
+  getStatusSeverity(status: TaskStatus): 'success' | 'info' | 'warn' | 'danger' | 'secondary' {
+    switch (status) {
+      case TaskStatus.ToDo: return 'secondary';
+      case TaskStatus.InProgress: return 'info';
+      case TaskStatus.Done: return 'success';
+      case TaskStatus.NeedDetails: return 'danger';
+      default: return 'secondary';
+    }
   }
 }

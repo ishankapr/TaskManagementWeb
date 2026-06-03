@@ -1,105 +1,101 @@
-@import 'common';
+@use 'common' as *;
 
-
-.task__card{
-  width: 100%;
-  padding: 1rem 0.5rem;
-  height: 100px;
-  margin: 0.3rem 0;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+.task-card {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  align-items: stretch;
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+  transition: box-shadow 0.2s, transform 0.2s;
 
-  .left__part{
-    .title{
-      @include textStyle(15px, 20px, #000, bold);
-      padding: 0.3rem 0
+  &:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+  }
+
+  &__status-bar {
+    width: 5px;
+    flex-shrink: 0;
+    border-radius: 0;
+
+    &.toDo        { background: #9ca3af; }
+    &.inProgress  { background: #6366f1; }
+    &.done        { background: #22c55e; }
+    &.needDetails { background: #ef4444; }
+  }
+
+  &__body {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    gap: 1rem;
+    min-width: 0;
+  }
+
+  &__left {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  &__title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  &__title {
+    @include textStyle(15px, 1.3, #111827, 600);
+  }
+
+  &__description {
+    @include textStyle(13px, 1.5, #6b7280, 400);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 480px;
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+
+    i {
+      font-size: 12px;
+      color: #9ca3af;
     }
-    .description{
-      @include textStyle(14px, 20px, #00000079, 500);
-      padding: 0.3rem 0
-    }
-    .assignedTo{
-      @include textStyle(14px, 20px, #00000079, 500);
-      padding: 0.3rem 0;
-      span{
-        color: brown;
-      }
+
+    span {
+      @include textStyle(12px, 1, #9ca3af, 500);
     }
   }
 
-
-  .right__part{
+  &__actions {
     display: flex;
     align-items: center;
-    gap:0.7rem;
-    .status{
-      font-size: 12px;
-      font-weight: 400;
-      padding: 0.3rem 0.5rem;
-      border-radius: 20px;
-      line-height: 20px;
-      width: fit-content;
-
-      &:is(.toDo){
-        background: rgba(128, 128, 128, 0.212);
-        border: gray 1px solid;
-        color: gray;
-      }
-
-      &:is(.inProgress){
-        background: rgba(72, 75, 245, 0.212);
-        border: rgb(46, 64, 224) 1px solid;
-        color: rgb(46, 64, 224);
-      }
-
-      &:is(.done){
-        background: rgba(0, 128, 0, 0.219);
-        border: green 1px solid;
-        color: green;
-      }
-
-      &:is(.needDetails){
-        background: rgba(255, 0, 0, 0.288);
-        border: red 1px solid;
-        color: red;
-      }
-    }
-
-    .action_btns{
-      svg{
-        width: 18px;
-        height: 18px;
-        margin: 0.5rem;
-        cursor: pointer;
-      }
-    }
+    gap: 0.25rem;
+    flex-shrink: 0;
   }
 }
 
-
-
-@include DesktopScreen{
+@include DesktopScreen {
   :host {
-    .task__card{
-      padding: 1rem 1.5rem;
-      .left__part{
-        .title{
-          @include textStyle(20px, 20px, #000, bold);
-          padding: 0.3rem 0
-        }
-        .description{
-          @include textStyle(18px, 20px, #00000079, 500);
-          padding: 0.3rem 0
-        }
+    .task-card {
+      &__title {
+        font-size: 16px;
       }
-      .right__part{
-        gap: 1rem;
-        .status{
-          @include textStyle(15px, 20px, #000, 400);
-        }
+
+      &__description {
+        font-size: 14px;
       }
     }
   }

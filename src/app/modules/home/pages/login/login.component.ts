@@ -2,11 +2,14 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { Component, HostListener, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
+import { InputTextModule } from 'primeng/inputtext';
+import { PasswordModule } from 'primeng/password';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, InputTextModule, PasswordModule, ButtonModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })

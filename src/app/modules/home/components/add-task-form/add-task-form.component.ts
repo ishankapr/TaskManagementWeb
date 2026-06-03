@@ -5,6 +5,10 @@ import { Store } from '@ngrx/store';
 import * as appActions from '../../../../store/App/app.actions'
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { InputTextModule } from 'primeng/inputtext';
+import { SelectModule } from 'primeng/select';
+import { ButtonModule } from 'primeng/button';
+import { TextareaModule } from 'primeng/textarea';
 import { User } from '../../../core/models/User';
 import { TaskService } from '../../../core/services/task.service';
 import { UserService } from '../../../core/services/user.service';
@@ -18,7 +22,7 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-add-task-form',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, InputTextModule, SelectModule, ButtonModule, TextareaModule],
   templateUrl: './add-task-form.component.html',
   styleUrl: './add-task-form.component.scss',
   animations: [fadeIn]

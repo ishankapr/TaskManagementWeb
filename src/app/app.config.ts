@@ -7,6 +7,8 @@ import { reducers, metaReducers } from './store';
 import { provideHttpClient } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideToastr } from 'ngx-toastr';
+import { providePrimeNG } from 'primeng/config';
+import Aura from '@primeuix/themes/aura';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,5 +18,6 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideAnimations(),
     provideToastr({ closeButton: false }),
+    providePrimeNG({ theme: { preset: Aura, options: { darkModeSelector: false } } }),
   ]
 };
