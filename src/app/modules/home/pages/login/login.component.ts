@@ -2,8 +2,6 @@ import { Component, HostListener, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
-import { UserService } from '../../../core/services/user.service';
-import { ToastrService } from 'ngx-toastr';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
@@ -23,9 +21,7 @@ export class LoginComponent implements OnInit {
 
   private _fb = inject(FormBuilder);
   private _authService = inject(AuthService);
-  private _userService = inject(UserService);
   private _router = inject(Router);
-  private _toastr = inject(ToastrService);
   loginForm!: FormGroup;
 
   @HostListener('window:resize', ['$event'])
@@ -55,18 +51,7 @@ export class LoginComponent implements OnInit {
 
     const { username, password } = this.loginForm.value;
     this._authService.setCredentials(username, password);
-
-    this._userService.getUsers().subscribe({
-      next: (users) => {
-        const user = users.find(u => u.username === username && u.password === password);
-        if (user) {
-          localStorage.setItem('currentUser', JSON.stringify(user));
-          this._router.navigate(['/']);
-        } else {
-          this._toastr.error('Invalid username or password');
-        }
-      },
-      error: () => this._toastr.error('Could not reach server')
-    });
+    localStorage.setItem('currentUser', JSON.stringify({ username }));
+    this._router.navigate(['/']);
   }
 }
